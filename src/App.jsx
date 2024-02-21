@@ -2,7 +2,7 @@ import {Header} from "./components/Header/Header.jsx";
 import {Tasks} from "./components/Tasks/Tasks.jsx";
 import {useEffect, useState} from "react";
 
-const LOCAL_STORAGE_KEY = "todo:savedtasks";
+const LOCAL_STORAGE_KEY = "todo:saved-tasks";
 
 function App() {
     const [tasks, setTasks] = useState([]);
@@ -19,20 +19,25 @@ function App() {
     }, []);
 
     function setTasksAndSave(newTasks) {
-        setTasks(newTasks);
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newTasks))
+            setTasks(newTasks);
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newTasks))
     }
 
     function addTask(taskTitle) {
-        setTasksAndSave([
-            ...tasks,
-            {
-                id: crypto.randomUUID(),
-                title: taskTitle,
-                isCompleted: false
-            }
-        ])
+        if (taskTitle && taskTitle.trim()) {
+            setTasksAndSave([
+                ...tasks,
+                {
+                    id: crypto.randomUUID(),
+                    title: taskTitle.trim(),
+                    isCompleted: false
+                }
+            ])
+        } else {
+            alert("Task title cannot be empty.");
+        }
     }
+
 
 
     function deleteTaskById(taskId) {
